@@ -1,4 +1,4 @@
-import { Heading } from "@/shared/ui/heading/Heading";
+import { Heading } from "@/shared/ui";
 
 export default async function Home() {
 
