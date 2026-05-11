@@ -1,10 +1,10 @@
 import { InvoiceItemProps } from "@/entities/invoice";
 
 
-export function InvoiceItem({ title, formattedAmount }: InvoiceItemProps) {
+export function InvoiceItem({ customer_id, formattedAmount }: InvoiceItemProps) {
   return (
     <li className="flex justify-between border-b py-2">
-      <span>{title}</span>
+      <span>{customer_id}</span>
       <span>{formattedAmount}</span>
     </li>
   );
