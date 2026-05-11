@@ -1,13 +1,12 @@
 export type Invoice = {
   id: string;
-  title: string;
   amount: number;
-  description?: string;
-  created_at?: string;
-  updated_at?: string;
+  customer_id: string;
+  date: string;
+  status: "paid" | "pending" | "overdue";
 }
 
-export type InvoiceItemProps = Pick<Invoice, "title"> & {
+export type InvoiceItemProps = Pick<Invoice, "customer_id"> & {
     formattedAmount: string;
 }
 
