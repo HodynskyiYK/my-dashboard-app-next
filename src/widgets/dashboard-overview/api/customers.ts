@@ -6,4 +6,4 @@ export async function getTotalCustomers(): Promise<number> {
         throw new Error(error.message);
     }
     return data ? data.length : 0;
-};
+}
