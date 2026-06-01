@@ -22,7 +22,7 @@ export function CustomerPagination({
   }
 
   const goToPage = (page: number) => {
-    router.push(
+    router.replace(
       buildCustomersUrl(pathname, {
         query: query.trim() || undefined,
         page,

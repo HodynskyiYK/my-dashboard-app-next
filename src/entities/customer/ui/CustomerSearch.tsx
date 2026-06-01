@@ -14,10 +14,6 @@ export function CustomerSearch() {
   const [value, setValue] = useState(queryFromUrl);
 
   useEffect(() => {
-    setValue(queryFromUrl);
-  }, [queryFromUrl]);
-
-  useEffect(() => {
     const trimmedValue = value.trim();
     const trimmedUrlQuery = queryFromUrl.trim();
 
@@ -39,12 +35,13 @@ export function CustomerSearch() {
 
   return (
     <input
+      key={queryFromUrl}
       type="search"
       value={value}
       onChange={(event) => setValue(event.target.value)}
-      placeholder="Search by name..."
+      placeholder="Search customers..."
       className="mb-4 w-full max-w-md rounded-md border border-gray-300 px-3 py-2"
-      aria-label="Search customers by name"
+      aria-label="Search customers"
     />
   );
 }
