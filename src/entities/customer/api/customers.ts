@@ -9,6 +9,16 @@ import { CUSTOMERS_PAGE_LIMIT } from "@/entities/customer/lib/customers-url";
 const CUSTOMERS_API_URL =
   "https://6995aa9db081bc23e9c40229.mockapi.io/api/v1/users";
 
+class HttpError extends Error {
+  readonly status: number;
+
+  constructor(status: number, message: string) {
+    super(message);
+    this.status = status;
+    this.name = "HttpError";
+  }
+}
+
 function buildCustomersApiUrl({
   query,
   page,
@@ -47,6 +57,17 @@ function getTotalFromHeaders(headers: Headers): number | undefined {
   return Number.isFinite(parsed) ? parsed : undefined;
 }
 
+function resolvePaginationMeta(
+  total: number,
+  safePage: number,
+  limit: number
+) {
+  const totalPages = Math.max(1, Math.ceil(total / limit));
+  const currentPage = Math.min(safePage, totalPages);
+
+  return { totalPages, currentPage };
+}
+
 const fetchCustomersPage = cache(
   async (
     query: string,
@@ -57,7 +78,7 @@ const fetchCustomersPage = cache(
     const res = await fetch(url);
 
     if (!res.ok) {
-      throw new Error(`Failed to fetch customers: ${res.status}`);
+      throw new HttpError(res.status, `Failed to fetch customers: ${res.status}`);
     }
 
     const customers = (await res.json()) as Customer[];
@@ -71,7 +92,7 @@ const fetchAllCustomers = cache(async (): Promise<Customer[]> => {
   const res = await fetch(CUSTOMERS_API_URL);
 
   if (!res.ok) {
-    throw new Error(`Failed to fetch customers: ${res.status}`);
+    throw new HttpError(res.status, `Failed to fetch customers: ${res.status}`);
   }
 
   return res.json();
@@ -99,65 +120,54 @@ export async function getCustomers({
   } catch (error) {
     if (
       normalizedQuery &&
-      error instanceof Error &&
-      error.message.includes("404")
+      error instanceof HttpError &&
+      error.status === 404
     ) {
       const all = await fetchAllCustomers();
       const filtered = filterCustomersByQuery(all, normalizedQuery);
-      const total = filtered.length;
-      const totalPages = Math.max(1, Math.ceil(total / limit));
-      const currentPage = Math.min(safePage, totalPages);
+      const { totalPages, currentPage } = resolvePaginationMeta(
+        filtered.length,
+        safePage,
+        limit
+      );
 
       return {
         customers: filtered.slice((currentPage - 1) * limit, currentPage * limit),
         page: currentPage,
         totalPages,
-        total,
+        total: filtered.length,
       };
     }
 
     throw error;
   }
 
-  let total = pageResult.total;
-  let currentPage = safePage;
-  let customers = pageResult.customers;
+  const { customers: pageCustomers, total } = pageResult;
 
   if (total === undefined) {
     const all = await fetchAllCustomers();
-    total = all.length;
-
-    const totalPages = Math.max(1, Math.ceil(total / limit));
-    currentPage = Math.min(safePage, totalPages);
-
-    if (currentPage !== safePage) {
-      const remappedPage = await fetchCustomersPage(
-        normalizedQuery,
-        currentPage,
-        limit
-      );
-      customers = remappedPage.customers;
-    }
+    const filtered = normalizedQuery
+      ? filterCustomersByQuery(all, normalizedQuery)
+      : all;
+    const { totalPages, currentPage } = resolvePaginationMeta(
+      filtered.length,
+      safePage,
+      limit
+    );
 
     return {
-      customers,
+      customers: filtered.slice((currentPage - 1) * limit, currentPage * limit),
       page: currentPage,
       totalPages,
-      total,
+      total: filtered.length,
     };
   }
 
-  const totalPages = Math.max(1, Math.ceil(total / limit));
-  currentPage = Math.min(safePage, totalPages);
-
-  if (currentPage !== safePage) {
-    const remappedPage = await fetchCustomersPage(
-      normalizedQuery,
-      currentPage,
-      limit
-    );
-    customers = remappedPage.customers;
-  }
+  const { totalPages, currentPage } = resolvePaginationMeta(total, safePage, limit);
+  const customers =
+    currentPage === safePage
+      ? pageCustomers
+      : (await fetchCustomersPage(normalizedQuery, currentPage, limit)).customers;
 
   return {
     customers,
