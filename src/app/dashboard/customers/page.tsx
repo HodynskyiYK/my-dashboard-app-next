@@ -21,13 +21,7 @@ async function Customers({ searchParams }: CustomersPageProps) {
       <p className="mb-4">
         Here you can manage your customers and view their information.
       </p>
-      <Suspense
-        fallback={
-          <div className="mb-4 h-10 max-w-md animate-pulse rounded-md bg-gray-200" />
-        }
-      >
-        <CustomerSearch />
-      </Suspense>
+      <CustomerSearch />
       <Suspense key={suspenseKey} fallback={<CustomersSkeleton />}>
         <CustomerList query={query} page={page} />
       </Suspense>
