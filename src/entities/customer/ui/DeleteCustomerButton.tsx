@@ -2,7 +2,6 @@ import { deleteCustomer } from "@/entities/customer/api/actions";
 
 type DeleteCustomerButtonProps = {
   id: string;
-  name: string;
 };
 
 export function DeleteCustomerButton({ id }: DeleteCustomerButtonProps) {

@@ -25,7 +25,7 @@ export function CustomerItem({ id, name, email, image_url }: CustomerItemProps) 
         >
           Edit
         </Link>
-        <DeleteCustomerButton id={id} name={name} />
+        <DeleteCustomerButton id={id} />
       </div>
     </li>
   );

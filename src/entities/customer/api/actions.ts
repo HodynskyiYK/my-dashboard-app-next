@@ -14,6 +14,7 @@ const CustomerFormSchema = z.object({
 });
 
 type CustomerFormInput = z.infer<typeof CustomerFormSchema>;
+type CustomerRequestMethod = "POST" | "PUT";
 
 function parseCustomerFormData(formData: FormData): CustomerFormInput {
   const name = formData.get("name");
@@ -29,7 +30,7 @@ function parseCustomerFormData(formData: FormData): CustomerFormInput {
 
 async function sendCustomerRequest(
   url: string,
-  method: "POST" | "PUT",
+  method: CustomerRequestMethod,
   data: CustomerFormInput
 ) {
   const res = await fetch(url, {
@@ -45,18 +46,21 @@ async function sendCustomerRequest(
   }
 }
 
+function handleCustomerMutationSuccess() {
+  revalidatePath("/dashboard/customers");
+  redirect("/dashboard/customers");
+}
+
 export async function createCustomer(formData: FormData) {
   const parsed = parseCustomerFormData(formData);
   await sendCustomerRequest(CUSTOMERS_API_URL, "POST", parsed);
-  revalidatePath("/dashboard/customers");
-  redirect("/dashboard/customers");
+  handleCustomerMutationSuccess();
 }
 
 export async function updateCustomer(id: string, formData: FormData) {
   const parsed = parseCustomerFormData(formData);
   await sendCustomerRequest(`${CUSTOMERS_API_URL}/${id}`, "PUT", parsed);
-  revalidatePath("/dashboard/customers");
-  redirect("/dashboard/customers");
+  handleCustomerMutationSuccess();
 }
 
 export async function deleteCustomer(id: string) {
