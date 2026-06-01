@@ -5,7 +5,7 @@ export type Customer = {
   image_url: string;
 };
 
-export type CustomerItemProps = Pick<Customer, "name" | "email" | "image_url">;
+export type CustomerItemProps = Pick<Customer, "id" | "name" | "email" | "image_url">;
 
 export type GetCustomersParams = {
   query?: string;

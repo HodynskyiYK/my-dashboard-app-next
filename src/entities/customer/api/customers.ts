@@ -62,3 +62,13 @@ export async function getCustomers({
     total: filtered.length,
   };
 }
+
+export async function getCustomerById(id: string): Promise<Customer> {
+  const res = await fetch(`${CUSTOMERS_API_URL}/${id}`);
+
+  if (!res.ok) {
+    throw new Error(`Failed to fetch customer: ${res.status}`);
+  }
+
+  return (await res.json()) as Customer;
+}
