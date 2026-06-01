@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="afa10290-fbaf-462f-a60c-8eecc3619c0d" name="Changes" comment="Added loading/error state for Customers page" />
+    <list default="true" id="afa10290-fbaf-462f-a60c-8eecc3619c0d" name="Changes" comment="Update workspace.xml" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -119,6 +119,7 @@
       <updated>1778506993201</updated>
       <workItem from="1778506994209" duration="1988000" />
       <workItem from="1778515192544" duration="1241000" />
+      <workItem from="1778567564277" duration="1280000" />
     </task>
     <task id="LOCAL-00001" summary="Updated UI for Invoice data">
       <option name="closed" value="true" />
@@ -152,7 +153,15 @@
       <option name="project" value="LOCAL" />
       <updated>1778515226179</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Update workspace.xml">
+      <option name="closed" value="true" />
+      <created>1778567586503</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1778567586503</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -163,7 +172,8 @@
     <MESSAGE value="Added functionality for DashboardOverview" />
     <MESSAGE value="Removed unnecessary semicolon" />
     <MESSAGE value="Added .idea folder" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added .idea folder" />
+    <MESSAGE value="Update workspace.xml" />
+    <option name="LAST_COMMIT_MESSAGE" value="Update workspace.xml" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
