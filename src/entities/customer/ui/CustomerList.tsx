@@ -29,6 +29,7 @@ export async function CustomerList({ query, page }: CustomerListProps) {
         {customers.map((customer) => (
           <CustomerItem
             key={customer.id}
+            id={customer.id}
             name={customer.name}
             email={customer.email}
             image_url={customer.image_url}
