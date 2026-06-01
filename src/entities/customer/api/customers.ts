@@ -124,7 +124,7 @@ export async function getCustomers({
   let customers = pageResult.customers;
 
   if (total === undefined) {
-    const all = await fetchAllCustomers(normalizedQuery);
+    const all = await fetchAllCustomers();
     total = all.length;
 
     const totalPages = Math.max(1, Math.ceil(total / limit));
