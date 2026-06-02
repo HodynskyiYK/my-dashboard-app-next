@@ -1,6 +1,7 @@
 import { getCustomerById } from "@/entities/customer/api/customers";
 import { EditCustomerForm } from "@/entities/customer/ui/EditCustomerForm";
 import Link from "next/link";
+import { notFound } from "next/navigation";
 
 type EditCustomerPageProps = {
   params: Promise<{ id: string }>;
@@ -11,6 +12,10 @@ export default async function EditCustomerPage({
 }: EditCustomerPageProps) {
   const { id } = await params;
   const customer = await getCustomerById(id);
+
+  if (!customer) {
+    notFound();
+  }
 
   return (
     <div className="flex-1 p-4">

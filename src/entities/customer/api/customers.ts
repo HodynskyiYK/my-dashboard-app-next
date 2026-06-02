@@ -63,8 +63,12 @@ export async function getCustomers({
   };
 }
 
-export async function getCustomerById(id: string): Promise<Customer> {
+export async function getCustomerById(id: string): Promise<Customer | null> {
   const res = await fetch(`${CUSTOMERS_API_URL}/${id}`);
+
+  if (res.status === 404) {
+    return null;
+  }
 
   if (!res.ok) {
     throw new Error(`Failed to fetch customer: ${res.status}`);
